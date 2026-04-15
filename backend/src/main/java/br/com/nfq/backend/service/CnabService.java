@@ -33,16 +33,18 @@ public class CnabService {
     }
 
     public void uploadCnabFile(MultipartFile file) throws IOException, JobInstanceAlreadyCompleteException, InvalidJobParametersException, JobExecutionAlreadyRunningException, JobRestartException {
-        var fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+        var originalName =  file.getOriginalFilename();
+
+        var fileName = StringUtils.cleanPath(originalName != null ? originalName : "");
         Path targetLocation = this.fileStorageLocation.resolve(fileName);
         file.transferTo(targetLocation);
 
         var jobParameters = new JobParametersBuilder()
                 .addJobParameter("cnab", file.getOriginalFilename(), String.class, true)
-                .addJobParameter("cnabFile", "file:" + targetLocation.toString(), String.class, false) //identifying false olha o nome do arquivo e não apenas o caminho relativo completo
+                .addJobParameter("cnabFile", "file:" + targetLocation, String.class, false) //identifying false olha o nome do arquivo e não apenas o caminho relativo completo
                 .toJobParameters();
 
-        //TODO verificar migration
         jobOperator.run(job, jobParameters);
     }
 

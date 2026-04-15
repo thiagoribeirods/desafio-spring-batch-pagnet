@@ -1,7 +1,5 @@
 package br.com.nfq.backend.entity;
 
-
-
 import br.com.nfq.backend.enums.TipoTransacaoEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -12,7 +10,6 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-//TODO tratar débito e crédito
 public record Transacao(
         @Id Long id,
         Integer tipo,
@@ -85,5 +82,4 @@ public record Transacao(
                 this.nomeLoja()
         );
     }
-
 }
